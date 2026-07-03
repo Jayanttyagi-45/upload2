@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { tusUploadManager } from '../services/tusUploadManager';
-import UploadStatus from '../components/UploadStatus';
 import { UploadCloud } from 'lucide-react';
 export default function Home() {
   const [isDragging, setIsDragging] = useState(false);
@@ -76,12 +75,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 
-        We render the UploadStatus component at the very bottom.
-        Because it has "fixed" positioning in its CSS, it will float 
-        in the bottom right corner over everything else!
-      */}
-      <UploadStatus />
     </main>
   );
 }
