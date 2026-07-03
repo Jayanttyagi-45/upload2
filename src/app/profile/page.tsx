@@ -27,8 +27,9 @@ export default function ProfilePage() {
       
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (event.target?.result) {
-          setProfile(prev => ({ ...prev, photoUrl: event.target.result as string }));
+        const result = event.target?.result;
+        if (result) {
+          setProfile(prev => ({ ...prev, photoUrl: result as string }));
         }
       };
       reader.readAsDataURL(file);
