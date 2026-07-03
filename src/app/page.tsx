@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { tusUploadManager } from '../services/tusUploadManager';
 import UploadStatus from '../components/UploadStatus';
-
+import { UploadCloud } from 'lucide-react';
 export default function Home() {
   const [isDragging, setIsDragging] = useState(false);
   
@@ -60,7 +60,7 @@ export default function Home() {
           onDrop={handleDrop}
         >
           <label className="cursor-pointer flex flex-col items-center w-full h-full">
-            <span className="text-4xl mb-4">📁</span>
+            <UploadCloud className="w-12 h-12 mb-4 text-gray-400" />
             <span className="text-blue-600 font-semibold text-lg hover:underline mb-2">
               Browse Videos
             </span>

@@ -2,7 +2,7 @@
 
 import { useUploadStore } from '../store/uploadStore';
 import { tusUploadManager } from '../services/tusUploadManager';
-
+import { Pause, Play, X } from 'lucide-react';
 export default function UploadStatus() {
   // 1. We connect to our Zustand "whiteboard" to get the list of uploads
   const { uploads } = useUploadStore();
@@ -34,21 +34,21 @@ export default function UploadStatus() {
 
                 {/* Pause Button */}
                 {upload.status === 'Uploading' && (
-                  <button onClick={() => tusUploadManager.pauseUpload(upload.id)} className="text-xl hover:text-yellow-600 transition-colors" title="Pause">
-                    ⏸️
+                  <button onClick={() => tusUploadManager.pauseUpload(upload.id)} className="text-gray-500 hover:text-yellow-600 transition-colors" title="Pause">
+                    <Pause className="w-5 h-5" />
                   </button>
                 )}
                 
                 {/* Resume Button */}
                 {upload.status === 'Paused' && (
-                  <button onClick={() => tusUploadManager.resumeUpload(upload.id)} className="text-xl hover:text-blue-600 transition-colors" title="Resume">
-                    ▶️
+                  <button onClick={() => tusUploadManager.resumeUpload(upload.id)} className="text-gray-500 hover:text-blue-600 transition-colors" title="Resume">
+                    <Play className="w-5 h-5" />
                   </button>
                 )}
                 
                 {/* Cancel Button */}
-                <button onClick={() => tusUploadManager.cancelUpload(upload.id)} className="text-xl hover:text-red-600 transition-colors" title="Cancel">
-                  ✖️
+                <button onClick={() => tusUploadManager.cancelUpload(upload.id)} className="text-gray-500 hover:text-red-600 transition-colors" title="Cancel">
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>

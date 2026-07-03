@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-
+import { CheckCircle2 } from 'lucide-react';
 export default function FormPage() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({
@@ -59,7 +59,7 @@ export default function FormPage() {
           
           {status === 'success' ? (
             <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center animate-in fade-in zoom-in duration-300">
-              <div className="text-5xl mb-4">🎉</div>
+              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-green-800 mb-2">Message Sent!</h2>
               <p className="text-green-600">Thanks for reaching out. We'll get back to you shortly.</p>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-
+import { ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
 type Task = { id: string, title: string, column: 'todo' | 'inProgress' | 'done' };
 
 export default function KanbanPage() {
@@ -55,10 +55,10 @@ export default function KanbanPage() {
               <p className="text-gray-800 font-medium mb-4">{task.title}</p>
               <div className="flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="flex gap-2">
-                  {status !== 'todo' && <button onClick={() => moveTask(task.id, status === 'done' ? 'inProgress' : 'todo')} className="text-xs font-bold text-gray-500 hover:text-indigo-600 bg-gray-100 px-2 py-1 rounded">←</button>}
-                  {status !== 'done' && <button onClick={() => moveTask(task.id, status === 'todo' ? 'inProgress' : 'done')} className="text-xs font-bold text-gray-500 hover:text-indigo-600 bg-gray-100 px-2 py-1 rounded">→</button>}
+                  {status !== 'todo' && <button onClick={() => moveTask(task.id, status === 'done' ? 'inProgress' : 'todo')} className="text-gray-500 hover:text-indigo-600 bg-gray-100 p-1.5 rounded"><ArrowLeft className="w-4 h-4" /></button>}
+                  {status !== 'done' && <button onClick={() => moveTask(task.id, status === 'todo' ? 'inProgress' : 'done')} className="text-gray-500 hover:text-indigo-600 bg-gray-100 p-1.5 rounded"><ArrowRight className="w-4 h-4" /></button>}
                 </div>
-                <button onClick={() => deleteTask(task.id)} className="text-red-500 hover:bg-red-50 p-1 rounded transition-colors text-sm">🗑️</button>
+                <button onClick={() => deleteTask(task.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors text-sm"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
           ))}

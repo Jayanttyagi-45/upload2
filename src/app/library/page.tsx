@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { Play, Trash2, X } from 'lucide-react';
 
 type Video = {
   id: string;
@@ -38,7 +39,7 @@ export default function LibraryPage() {
         <div className="flex justify-between items-end mb-8">
           <div>
             <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Media Library</h1>
-            <p className="text-gray-500 mt-1">Manage and preview your uploaded video assets.</p>
+            <p className="text-gray-500 mt-1">Manage your uploaded video assets.</p>
           </div>
           <span className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full">
             {videos.length} Assets
@@ -68,7 +69,7 @@ export default function LibraryPage() {
                 {/* Play Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="w-14 h-14 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center">
-                    <span className="text-white text-2xl ml-1">▶</span>
+                    <Play className="text-white w-7 h-7 ml-1" fill="currentColor" />
                   </div>
                 </div>
 
@@ -99,9 +100,7 @@ export default function LibraryPage() {
                     className="text-gray-400 hover:text-red-500 transition-colors"
                     title="Delete"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -126,7 +125,7 @@ export default function LibraryPage() {
               className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full flex items-center justify-center text-white font-bold transition-colors"
               title="Close Player"
             >
-              ✕
+              <X className="w-6 h-6" />
             </button>
             <video 
               src={videos.find(v => v.id === playingVideo)?.url} 

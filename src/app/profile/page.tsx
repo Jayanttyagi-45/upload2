@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-
+import { Check } from 'lucide-react';
 export default function ProfilePage() {
   const [photoHover, setPhotoHover] = useState(false);
   const [profile, setProfile] = useState({
@@ -86,7 +86,7 @@ export default function ProfilePage() {
                 disabled={isSaving}
                 className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 flex items-center gap-2"
               >
-                {isSaving ? 'Saving...' : saved ? '✅ Saved!' : 'Save Changes'}
+                {isSaving ? 'Saving...' : saved ? <><Check className="w-4 h-4" /> Saved!</> : 'Save Changes'}
               </button>
             </div>
 
