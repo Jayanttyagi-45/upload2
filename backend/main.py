@@ -2,8 +2,8 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
-import smtplib
-from email.mime.text import MIMEText
+import urllib.request
+import json
 import os
 from dotenv import load_dotenv
 
@@ -55,22 +55,26 @@ async def get_videos():
 @app.post("/api/contact")
 async def handle_contact_form(form: ContactForm):
     try:
-        sender_email = os.getenv("SMTP_EMAIL")
-        sender_password = os.getenv("SMTP_PASSWORD")
+        sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
+        sender_email = os.getenv("SENDGRID_SENDER_EMAIL")
         
-        if sender_email and sender_password and sender_email != "your-email@gmail.com":
-            # Send real email
-            msg = MIMEText(f"Message from {form.name} ({form.email}):\n\n{form.message}")
-            msg['Subject'] = f"Contact Form: {form.subject}"
-            msg['From'] = sender_email
-            msg['To'] = form.email # Send to the email address typed in the form
+        if sendgrid_api_key and sender_email and sendgrid_api_key != "your_api_key_here":
+            # Send real email using SendGrid HTTP API (Port 443 - NEVER blocked by Render)
+            url = "https://api.sendgrid.com/v3/mail/send"
+            headers = {
+                "Authorization": f"Bearer {sendgrid_api_key}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "personalizations": [{"to": [{"email": form.email}]}],
+                "from": {"email": sender_email},
+                "subject": f"Contact Form: {form.subject}",
+                "content": [{"type": "text/plain", "value": f"Message from {form.name} ({form.email}):\n\n{form.message}"}]
+            }
             
-            with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                server.starttls()
-                server.login(sender_email, sender_password)
-                server.send_message(msg)
-                
-            print("\n✅ Real email successfully sent via SMTP!")
+            req = urllib.request.Request(url, data=json.dumps(data).encode("utf-8"), headers=headers, method="POST")
+            with urllib.request.urlopen(req) as response:
+                print(f"\n✅ SendGrid Email successfully sent! Status Code: {response.status}")
 
         # Also log it to the terminal
         print("\n" + "*"*50)
