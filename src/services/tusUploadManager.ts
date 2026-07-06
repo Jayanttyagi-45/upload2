@@ -72,7 +72,7 @@ class TusUploadManager {
     // Check if we have a saved upload URL in the browser's local storage to resume from
     upload.findPreviousUploads().then((previousUploads) => {
       if (previousUploads.length > 0) {
-        console.log("Resuming previous upload:", previousUploads[0].url);
+        console.log("Resuming previous upload found in local storage.");
         upload.resumeFromPreviousUpload(previousUploads[0]);
       }
       upload.start();
