@@ -1,9 +1,9 @@
-import * as tus from 'tus-js-client';
-import { useUploadStore } from '../store/uploadStore';
+import * as tus from "tus-js-client";
+import { useUploadStore } from "../store/uploadStore";
 
 // We will use your Supabase URL and Anon Key here later
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 class TusUploadManager {
   // We keep a private list of the actual "tus" upload objects so we can pause/resume them
@@ -20,9 +20,14 @@ class TusUploadManager {
 
     // 1. Tell our Zustand store that a new upload has started
     if (!store.uploads[fileId]) {
-      store.addUpload({ id: fileId, fileName: file.name, progress: 0, status: 'Uploading' });
+      store.addUpload({
+        id: fileId,
+        fileName: file.name,
+        progress: 0,
+        status: "Uploading",
+      });
     } else {
-      store.updateStatus(fileId, 'Uploading');
+      store.updateStatus(fileId, "Uploading");
     }
 
     // 2. Configure the TUS library
@@ -35,7 +40,7 @@ class TusUploadManager {
         apikey: SUPABASE_ANON_KEY,
       },
       metadata: {
-        bucketName: 'videos',
+        bucketName: "videos",
         objectName: `anonymous_uploads/${Date.now()}_${file.name}`,
         contentType: file.type,
       },
@@ -50,20 +55,28 @@ class TusUploadManager {
 
       // 4. What to do when finished
       onSuccess: () => {
-        store.updateStatus(fileId, 'Completed');
+        store.updateStatus(fileId, "Completed");
         store.updateProgress(fileId, 100);
         this.activeUploads.delete(fileId);
       },
 
       onError: (error) => {
         console.error("Upload failed:", error);
-        store.updateStatus(fileId, 'Failed');
-      }
+        store.updateStatus(fileId, "Failed");
+      },
     });
 
-    // Save the upload object in memory and start it!
+    // Save the upload object in memory
     this.activeUploads.set(fileId, upload);
-    upload.start();
+
+    // Check if we have a saved upload URL in the browser's local storage to resume from
+    upload.findPreviousUploads().then((previousUploads) => {
+      if (previousUploads.length > 0) {
+        console.log("Resuming previous upload:", previousUploads[0].url);
+        upload.resumeFromPreviousUpload(previousUploads[0]);
+      }
+      upload.start();
+    });
   }
 
   // --- Controls ---
@@ -71,7 +84,7 @@ class TusUploadManager {
     const upload = this.activeUploads.get(fileId);
     if (upload) {
       upload.abort();
-      useUploadStore.getState().updateStatus(fileId, 'Paused');
+      useUploadStore.getState().updateStatus(fileId, "Paused");
     }
   }
 
@@ -79,7 +92,7 @@ class TusUploadManager {
     const upload = this.activeUploads.get(fileId);
     if (upload) {
       upload.start();
-      useUploadStore.getState().updateStatus(fileId, 'Uploading');
+      useUploadStore.getState().updateStatus(fileId, "Uploading");
     }
   }
 
